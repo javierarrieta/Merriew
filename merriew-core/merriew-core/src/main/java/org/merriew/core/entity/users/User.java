@@ -1,13 +1,30 @@
-package org.merriew.core.users;
+package org.merriew.core.entity.users;
 
 import java.io.Serializable;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="user")
 public class User implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 9187917701629285188L;
+
+	@Id
+	private String id;
+	
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 
 	private String username;
 	

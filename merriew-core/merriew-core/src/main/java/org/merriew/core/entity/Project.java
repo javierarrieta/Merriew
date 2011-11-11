@@ -1,17 +1,36 @@
-package org.merriew.core;
+package org.merriew.core.entity;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="project")
 public class Project implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 624896015418142786L;
+	
+	@Id
+	private String id;
 
+	@Column(nullable=false,unique=true)
 	private String name;
 	
 	private String description;
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 
 	public String getName() {
 		return name;

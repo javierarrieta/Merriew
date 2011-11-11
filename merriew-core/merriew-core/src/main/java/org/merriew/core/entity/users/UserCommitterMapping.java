@@ -1,9 +1,16 @@
-package org.merriew.core.users;
+package org.merriew.core.entity.users;
 
 import java.io.Serializable;
 
-import org.merriew.core.Repository;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
+import org.merriew.core.entity.Repository;
+
+@Entity
+@Table(name="user_mapping")
 public class UserCommitterMapping implements Serializable {
 
 	/**
@@ -11,8 +18,13 @@ public class UserCommitterMapping implements Serializable {
 	 */
 	private static final long serialVersionUID = -7080710342232951565L;
 
+	@Id
+	private String id;
+	
+	@ManyToOne
 	private User user;
 	
+	@ManyToOne
 	private Repository repository;
 	
 	private String[] committers;
@@ -39,6 +51,14 @@ public class UserCommitterMapping implements Serializable {
 
 	public void setCommitters(String[] committers) {
 		this.committers = committers;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 	
 	
