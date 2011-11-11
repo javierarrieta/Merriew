@@ -12,6 +12,16 @@ public class Repository implements Serializable {
 	private String uri;
 	
 	private String name;
+	
+	private Project project;
+
+	public Project getProject() {
+		return project;
+	}
+
+	public void setProject(Project project) {
+		this.project = project;
+	}
 
 	public String getUri() {
 		return uri;
