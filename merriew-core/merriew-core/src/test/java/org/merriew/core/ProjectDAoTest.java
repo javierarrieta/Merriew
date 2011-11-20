@@ -1,5 +1,7 @@
 package org.merriew.core;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
@@ -11,6 +13,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.merriew.core.dao.ProjectDao;
 import org.merriew.core.entity.Project;
+import org.merriew.core.entity.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
@@ -29,7 +32,7 @@ public class ProjectDAoTest extends AbstractTransactionalJUnit4SpringContextTest
 	public EntityManager em;
 	
 	@Test
-	public void testCreate() {
+	public void testCreateProject() {
 		
 		Project project1 = new Project();
 		
@@ -77,4 +80,51 @@ public class ProjectDAoTest extends AbstractTransactionalJUnit4SpringContextTest
 		Assert.assertEquals(p, p1);
 	}
 
+	@Test
+	public void findAllProjects() {
+		
+		Project p1 = new Project();
+		
+		p1.setName("1");
+		p1.setDescription("one");
+		
+		Project p2 = new Project();
+		
+		p2.setName("2");
+		p2.setDescription("two");
+		
+		projectDao.create(p1);
+		projectDao.create(p2);
+		
+		Project[] projects = projectDao.findAllProjects();
+		
+		Assert.assertArrayEquals(projects, new Project[] { p1, p2 } );
+		
+		
+		
+	}
+	
+	@Test
+	public void testCreateRepository() {
+		
+		Project p = new Project();
+		p.setName("1");
+		p.setDescription("one");
+		
+		projectDao.create(p);
+		
+		Repository r = new Repository();
+		
+		r.setName("r1");
+		r.setUri("file:///repos/r1");
+		r.setProject(p);
+		
+		projectDao.create(r);
+		
+		List<Repository> repos = em.createQuery("select r from Repository r", Repository.class ).getResultList();
+		
+		Assert.assertEquals("Result should have one element",1, repos.size() );
+		
+		Assert.assertEquals("Repository differs from inserted", r, repos.get(0) );
+	}
 }
