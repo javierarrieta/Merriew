@@ -8,6 +8,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import org.merriew.core.dao.ProjectDao;
+import org.merriew.core.entity.Environment;
 import org.merriew.core.entity.Project;
 import org.merriew.core.entity.Repository;
 import org.springframework.transaction.annotation.Isolation;
@@ -68,6 +69,20 @@ public class ProjectDaoImpl implements ProjectDao {
 		List<Repository> repos = q.getResultList();
 		
 		return repos.toArray( new Repository[ repos.size() ]);
+	}
+
+	public void create(Environment environment) {
+		
+		environment.setId( UUID.randomUUID().toString() );
+		
+		em.persist(environment);
+		
+	}
+
+	public Environment getEnvironment(String id) {
+		
+		return em.find(Environment.class, id);
+		
 	}
 
 }

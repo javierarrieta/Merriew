@@ -1,5 +1,6 @@
 package org.merriew.core.dao;
 
+import org.merriew.core.entity.Environment;
 import org.merriew.core.entity.Project;
 import org.merriew.core.entity.Repository;
 
@@ -17,4 +18,7 @@ public interface ProjectDao {
 	
 	public abstract Repository[] getRepositories( Project project );
 	
+	public abstract void create( Environment environment );
+	
+	public abstract Environment getEnvironment( String id );
 }
