@@ -127,4 +127,57 @@ public class ProjectDAoTest extends AbstractTransactionalJUnit4SpringContextTest
 		
 		Assert.assertEquals("Repository differs from inserted", r, repos.get(0) );
 	}
+	
+	@Test
+	public void testGetRepository() {
+
+		Project p = new Project();
+		p.setName("1");
+		p.setDescription("one");
+		
+		projectDao.create(p);
+		
+		Repository r = new Repository();
+		
+		r.setName("r1");
+		r.setUri("file:///repos/r1");
+		r.setProject(p);
+		
+		projectDao.create(r);
+		
+		Repository repo = projectDao.getRepository(r.getId());
+		
+		Assert.assertEquals("Retrieved repository should equal the created repository", r,repo);
+		
+	}
+	
+	@Test
+	public void testGetRepositories() {
+
+		Project p = new Project();
+		p.setName("1");
+		p.setDescription("one");
+		
+		projectDao.create(p);
+		
+		Repository r1 = new Repository();
+		
+		r1.setName("r1");
+		r1.setUri("file:///repos/r1");
+		r1.setProject(p);
+
+		
+		Repository r2 = new Repository();
+		
+		r2.setName("r2");
+		r2.setUri("file:///repos/r2");
+		r2.setProject(p);
+		
+		projectDao.create(r1);
+		projectDao.create(r2);
+		
+		Assert.assertArrayEquals("Retrieved repositories should equal the created repositories", 
+				new Repository[] { r1, r2 }, projectDao.getRepositories(p) );
+		
+	}
 }

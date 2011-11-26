@@ -63,7 +63,7 @@ public class ProjectDaoImpl implements ProjectDao {
 
 	public Repository[] getRepositories(Project project) {
 		
-		TypedQuery<Repository> q = em.createNamedQuery("Rpository.findByProjectId", Repository.class);
+		TypedQuery<Repository> q = em.createNamedQuery("Repository.findByProjectId", Repository.class);
 		q.setParameter("projectId", project.getId() );
 		List<Repository> repos = q.getResultList();
 		

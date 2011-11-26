@@ -13,7 +13,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="repository")
 @NamedQueries(
-		@NamedQuery(name="Repositoy.findByProjectId", query="select r from Repository r where r.project.id=:projectId")
+		@NamedQuery(name="Repository.findByProjectId", query="select r from Repository r where r.project.id=:projectId")
 )
 public class Repository implements Serializable {
 	
