@@ -84,5 +84,15 @@ public class ProjectDaoImpl implements ProjectDao {
 		return em.find(Environment.class, id);
 		
 	}
+	
+	public Environment[] findAllEnvironments() {
+		
+		TypedQuery<Environment> q = em.createNamedQuery(Environment.FIND_ALL, Environment.class);
+		
+		List<Environment>  envs = q.getResultList();
+		
+		return envs.toArray( new Environment[envs.size() ] );
+		
+	}
 
 }

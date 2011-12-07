@@ -12,6 +12,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.merriew.core.dao.ProjectDao;
+import org.merriew.core.entity.Environment;
 import org.merriew.core.entity.Project;
 import org.merriew.core.entity.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  		"/META-INF/spring/merriew-core-entities.xml",
  		"/META-INF/spring/merriew-core-persistence.xml" })
 public class ProjectDAoTest extends AbstractTransactionalJUnit4SpringContextTests {
-	
+
 	@Autowired
 	public ProjectDao projectDao;
 	
@@ -178,6 +179,78 @@ public class ProjectDAoTest extends AbstractTransactionalJUnit4SpringContextTest
 		
 		Assert.assertArrayEquals("Retrieved repositories should equal the created repositories", 
 				new Repository[] { r1, r2 }, projectDao.getRepositories(p) );
+		
+	}
+	
+	@Test
+	public void testCreateEnvironment() {
+		
+		Environment env1 = new Environment();
+		env1.setName("Development");
+		
+		projectDao.create(env1);
+		
+		Assert.assertEquals("Could not find the created environment",
+				em.find(Environment.class, env1.getId() ), env1 );
+		
+		Environment env2 = new Environment();
+		env2.setName("QA");
+		
+		projectDao.create(env2);
+		
+		Assert.assertEquals("Could not find the created environment",
+				em.find(Environment.class, env2.getId() ), env2 );
+		
+		Environment env3 = new Environment();
+		env3.setName("QA");
+		
+		try {
+			
+			projectDao.create(env3);
+			
+			em.createNamedQuery(Environment.FIND_ALL, Environment.class).getResultList();
+
+			Assert.fail("Inserted two environments with the same name, should have raised an error");
+			
+		} catch ( PersistenceException e ) { 
+			if(! (e.getCause() instanceof ConstraintViolationException ) ) {
+				Assert.fail(e.getLocalizedMessage() );
+			}
+		}
+	}
+	
+
+	@Test
+	public void testGetEnvironment() {
+		
+		Environment e1 = new Environment();
+		e1.setName("1");
+		
+		projectDao.create(e1);
+		
+		Environment e2 = projectDao.getEnvironment(e1.getId());
+		
+		Assert.assertEquals(e1, e2);
+	}
+	
+	@Test
+	public void testFindAllEnvironments() {
+
+		Environment env1 = new Environment();
+		env1.setName("Development");
+		projectDao.create(env1);
+		
+		
+		Environment env2 = new Environment();
+		env2.setName("QA");
+		projectDao.create(env2);
+		
+		Environment env3 = new Environment();
+		env3.setName("Preprod");
+		projectDao.create(env3);
+		
+		Assert.assertArrayEquals(new Environment[] { env1, env2, env3 }, projectDao.findAllEnvironments() );
+		
 		
 	}
 }

@@ -21,4 +21,7 @@ public interface ProjectDao {
 	public abstract void create( Environment environment );
 	
 	public abstract Environment getEnvironment( String id );
+
+	public Environment[] findAllEnvironments();
+	
 }

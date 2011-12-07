@@ -5,11 +5,17 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="environment")
+@NamedQueries(
+		@NamedQuery( name = "Environment.findAll", query = "select e from Environment e"))
 public class Environment implements Serializable {
+	
+	public static final String FIND_ALL = "Environment.findAll";
 
 	/**
 	 * 
